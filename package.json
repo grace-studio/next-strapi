@@ -1,0 +1,40 @@
+{
+  "name": "@grace-studio/next-strapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\"",
+    "lint": "eslint",
+    "prepublishOnly": "npm test && npm run lint && npm run build",
+    "preversion": "npm test && npm run lint",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grace-studio/next-strapi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/grace-studio/next-strapi/issues"
+  },
+  "homepage": "https://github.com/grace-studio/next-strapi#readme",
+  "devDependencies": {
+    "typescript": "4.8.4",
+    "prettier": "2.7.1",
+    "prettier-eslint": "15.0.1",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-prettier": "4.2.1"
+  }
+}
