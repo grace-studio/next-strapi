@@ -1,5 +1,7 @@
 # @grace-studio/next-strapi
 
+[![npm version](https://badge.fury.io/js/@grace-studio%2Fnext-strapi.svg)](https://badge.fury.io/js/@grace-studio%2Fnext-strapi)
+
 Middle layer to connect a Next.js application with Strapi.
 
 ## Installation

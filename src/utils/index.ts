@@ -21,4 +21,4 @@ export const validateConfig = (config: NextStrapiConfig) => {
 };
 
 export const generateUUID = () =>
-  randomUUID({ disableEntropyCache: true }).replace('-', '');
+  randomUUID({ disableEntropyCache: true }).replace(/[\W_]+/g, '');

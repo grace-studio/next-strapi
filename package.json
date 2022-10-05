@@ -1,7 +1,7 @@
 {
   "name": "@grace-studio/next-strapi",
   "version": "0.0.1",
-  "description": "",
+  "description": "Middle layer to connect a Next.js application with Strapi.",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
   "types": "./lib/esm/index.d.ts",
@@ -24,7 +24,7 @@
     "url": "git+https://github.com/grace-studio/next-strapi.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Grace Studio",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/grace-studio/next-strapi/issues"
@@ -46,5 +46,9 @@
   "dependencies": {
     "axios": "0.27.2",
     "qs": "6.11.0"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
   }
 }
