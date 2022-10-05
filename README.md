@@ -6,11 +6,13 @@ Middle layer to connect a Next.js application with Strapi.
 
 ## Installation
 
-```
+```bash
 npm i @grace-studio/next-strapi
+```
 
-// or
+or
 
+```bash
 yarn add @grace-studio/next-strapi
 ```
 
