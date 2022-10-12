@@ -7,7 +7,7 @@ import type {
   FetchCollectionItemOptions,
   FetchCollectionPaths,
   FetchItemOptions,
-  FetchMenusOptions,
+  FetchMenuOptions,
   FetchNavigationOptions,
   KeyValue,
   NextStrapiConfig,
@@ -69,7 +69,7 @@ export class NextStrapi {
       return __this.__fetchFromApi<T>(path, queryObject);
     };
 
-    const menus = async <T>({ slug }: FetchMenusOptions) => {
+    const menu = async <T>({ slug }: FetchMenuOptions) => {
       let id;
       try {
         const menuData = await __this.__fetchFromApi('menus', {});
@@ -93,7 +93,7 @@ export class NextStrapi {
       collectionItem,
       collectionPaths,
       navigation,
-      menus,
+      menu,
     };
   }
 

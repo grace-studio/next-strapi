@@ -18,7 +18,7 @@ export type FetchCollectionItemOptions = FetchOptions;
 export type FetchCollectionPaths = Pick<FetchOptions, 'apiId'>;
 export type FetchItemOptions = Omit<FetchOptions, 'slug'>;
 
-export type FetchMenusOptions = {
+export type FetchMenuOptions = {
   slug: string;
 };
 
