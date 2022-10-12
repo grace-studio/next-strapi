@@ -18,6 +18,10 @@ export type FetchCollectionItemOptions = FetchOptions;
 export type FetchCollectionPaths = Pick<FetchOptions, 'apiId'>;
 export type FetchItemOptions = Omit<FetchOptions, 'slug'>;
 
+export type FetchMenusOptions = {
+  slug: string;
+};
+
 export type FetchNavigationOptions = {
   navigationIdOrSlug: string;
   type?: 'TREE' | 'FLAT' | 'RFR';
