@@ -76,4 +76,9 @@ const [global] = await api.get.item<GlobalItem>({
     populate: '*',
   },
 });
+
+// Get menu with slug = main-menu
+const menu = await api.get.menus({
+  slug: 'main-menu',
+});
 ```
