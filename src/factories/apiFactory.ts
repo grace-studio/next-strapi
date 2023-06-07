@@ -10,10 +10,12 @@ import {
 export const ApiFactory = {
   createRequestConfig: (
     baseUrl: string,
-    apiToken: string
+    apiToken: string,
+    headers?: Record<string, string>
   ): AxiosRequestConfig => ({
     baseURL: baseUrl.endsWith('/') ? `${baseUrl}api/` : `${baseUrl}/api/`,
     headers: {
+      ...headers,
       Authorization: `Bearer ${apiToken}`,
     },
   }),

@@ -5,6 +5,8 @@ export type KeyValue<T> = {
 export type NextStrapiConfig = {
   apiUrl: string;
   apiToken: string;
+  headers?: Record<string, string>;
+  verbose?: boolean;
 };
 
 type FetchOptions = {
