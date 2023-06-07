@@ -22,3 +22,9 @@ export const validateConfig = (config: NextStrapiConfig) => {
 
 export const generateUUID = () =>
   randomUUID({ disableEntropyCache: true }).replace(/[\W_]+/g, '');
+
+export const logger = (message: object, verbose?: boolean) =>
+  verbose &&
+  console.log(
+    JSON.stringify({ timestamp: new Date().toISOString(), message }, null, 2)
+  );
