@@ -28,51 +28,57 @@ export class NextStrapi {
     return new NextStrapi(config);
   }
 
-  private async __fetchFromApi<T>(path: string, queryObject: KeyValue<any>) {
+  private async __fetchFromApi<T, M = any>(
+    path: string,
+    queryObject: KeyValue<any>
+  ) {
     const queryString = ApiFactory.createQueryString(queryObject);
     const url = queryString ? `${path}?${queryString}` : path;
 
     const response = await this.__httpClient.get(url);
 
-    return [DataFactory.flattenStrapiV4Response<T>(response)].flat();
+    return {
+      data: [DataFactory.flattenStrapiV4Response<T>(response)].flat(),
+      meta: response.meta as M,
+    };
   }
 
   get get() {
     const __this = this;
 
-    const item = <T>(options: FetchItemOptions) => {
+    const item = <T, M>(options: FetchItemOptions) => {
       const queryObject = ApiFactory.createQueryObjectForItem(options);
 
-      return __this.__fetchFromApi<T>(options.apiId, queryObject);
+      return __this.__fetchFromApi<T, M>(options.apiId, queryObject);
     };
 
-    const collectionItem = <T>(options: FetchCollectionItemOptions) => {
+    const collectionItem = <T, M>(options: FetchCollectionItemOptions) => {
       const queryObject =
         ApiFactory.createQueryObjectForCollectionItem(options);
 
-      return __this.__fetchFromApi<T>(options.apiId, queryObject);
+      return __this.__fetchFromApi<T, M>(options.apiId, queryObject);
     };
 
-    const collectionPaths = <T>({ apiId }: FetchCollectionPaths) => {
+    const collectionPaths = <T, M>({ apiId }: FetchCollectionPaths) => {
       const queryObject = {
         locale: 'all',
         fields: ['slug', 'locale'],
       };
 
-      return __this.__fetchFromApi<T>(apiId, queryObject);
+      return __this.__fetchFromApi<T, M>(apiId, queryObject);
     };
 
-    const navigation = <T>(options: FetchNavigationOptions) => {
+    const navigation = <T, M>(options: FetchNavigationOptions) => {
       const queryObject = ApiFactory.createQueryObjectForNavigation(options);
       const path = `navigation/render/${options.navigationIdOrSlug}`;
 
-      return __this.__fetchFromApi<T>(path, queryObject);
+      return __this.__fetchFromApi<T, M>(path, queryObject);
     };
 
-    const menu = async <T>({ slug }: FetchMenuOptions) => {
+    const menu = async <T, M>({ slug }: FetchMenuOptions) => {
       let id;
       try {
-        const menuData = await __this.__fetchFromApi('menus', {});
+        const { data: menuData } = await __this.__fetchFromApi('menus', {});
         id = menuData.find((item: any) => item.slug === slug);
       } catch (err: any) {
         throw new Error(err);
@@ -84,7 +90,7 @@ export class NextStrapi {
       };
       const path = `menus/${id}`;
 
-      return __this.__fetchFromApi<T>(path, queryObject);
+      return __this.__fetchFromApi<T, M>(path, queryObject);
     };
 
     return {
