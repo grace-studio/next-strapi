@@ -1,6 +1,6 @@
 {
   "name": "@grace-studio/next-strapi",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Middle layer to connect a Next.js application with Strapi.",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
