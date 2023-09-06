@@ -34,7 +34,10 @@ const config: NextStrapiConfig = {
 const api = NextStrapi.create(config);
 
 // Get single item with id = global
-const [global] = await api.get.item({
+const {
+  data: [global],
+  meta,
+} = await api.get.item({
   apiId: 'global',
   locale: 'en',
   populateQueryObject: {
@@ -43,7 +46,7 @@ const [global] = await api.get.item({
 });
 
 // Get collection with id = pages
-const pages = await api.get.collection({
+const { data: pages } = await api.get.collection({
   apiId: 'pages',
   locale: 'en',
   populateQueryObject: {
@@ -52,7 +55,7 @@ const pages = await api.get.collection({
 });
 
 // Get collections paths with id = pages
-const pages = await api.fetch.collectionPaths({ apiId: 'pages' });
+const { data: pages } = await api.fetch.collectionPaths({ apiId: 'pages' });
 
 const paths = pages.map((page: CollectionItem) => {
   const { slug } = page;
@@ -69,7 +72,19 @@ type GlobalItem = {
   slug: string;
 };
 
-const [global] = await api.get.item<GlobalItem>({
+type Meta = {
+  pagination: {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
+  };
+};
+
+const {
+  data: [global],
+  meta,
+} = await api.get.item<GlobalItem, Meta>({
   apiId: 'global',
   locale: 'en',
   populateQueryObject: {
@@ -78,7 +93,7 @@ const [global] = await api.get.item<GlobalItem>({
 });
 
 // Get menu with slug = main-menu
-const menu = await api.get.menus({
+const { data: menu } = await api.get.menus({
   slug: 'main-menu',
 });
 ```
