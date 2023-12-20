@@ -1,3 +1,5 @@
+import { AxiosRequestConfig } from 'axios';
+
 export type KeyValue<T> = {
   [key: string]: T;
 };
@@ -7,12 +9,14 @@ export type NextStrapiConfig = {
   apiToken: string;
   headers?: Record<string, string>;
   verbose?: boolean;
+  additionalConfig?: Omit<AxiosRequestConfig, 'baseURL' | 'headers'>;
 };
 
 type FetchOptions = {
   apiId: string;
   slug: string[] | null;
   locale?: string;
+  revalidate?: number;
   populateQueryObject?: KeyValue<any>;
 };
 

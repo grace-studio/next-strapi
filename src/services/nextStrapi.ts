@@ -28,11 +28,15 @@ export class NextStrapi {
     return new NextStrapi(config);
   }
 
-  private async __fetchFromApi<T, M>(path: string, queryObject: KeyValue<any>) {
+  private async __fetchFromApi<T, M>(
+    path: string,
+    queryObject: KeyValue<any>,
+    revalidate?: number,
+  ) {
     const queryString = ApiFactory.createQueryString(queryObject);
     const url = queryString ? `${path}?${queryString}` : path;
 
-    const response = await this.__httpClient.get(url);
+    const response = await this.__httpClient.get(url, revalidate);
 
     return {
       data: [DataFactory.flattenStrapiV4Response<T>(response)].flat(),
@@ -44,20 +48,28 @@ export class NextStrapi {
     const __this = this;
 
     const item = <T extends {} = object, M extends {} = object>(
-      options: FetchItemOptions
+      options: FetchItemOptions,
     ) => {
       const queryObject = ApiFactory.createQueryObjectForItem(options);
 
-      return __this.__fetchFromApi<T, M>(options.apiId, queryObject);
+      return __this.__fetchFromApi<T, M>(
+        options.apiId,
+        queryObject,
+        options.revalidate,
+      );
     };
 
     const collectionItem = <T extends {} = object, M extends {} = object>(
-      options: FetchCollectionItemOptions
+      options: FetchCollectionItemOptions,
     ) => {
       const queryObject =
         ApiFactory.createQueryObjectForCollectionItem(options);
 
-      return __this.__fetchFromApi<T, M>(options.apiId, queryObject);
+      return __this.__fetchFromApi<T, M>(
+        options.apiId,
+        queryObject,
+        options.revalidate,
+      );
     };
 
     const collectionPaths = <T extends {} = object, M extends {} = object>({
@@ -72,7 +84,7 @@ export class NextStrapi {
     };
 
     const navigation = <T extends {} = object, M extends {} = object>(
-      options: FetchNavigationOptions
+      options: FetchNavigationOptions,
     ) => {
       const queryObject = ApiFactory.createQueryObjectForNavigation(options);
       const path = `navigation/render/${options.navigationIdOrSlug}`;

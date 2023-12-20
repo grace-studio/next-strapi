@@ -11,13 +11,15 @@ export const ApiFactory = {
   createRequestConfig: (
     baseUrl: string,
     apiToken: string,
-    headers?: Record<string, string>
+    headers?: Record<string, string>,
+    additionalConfig?: Omit<AxiosRequestConfig, 'baseURL' | 'headers'>,
   ): AxiosRequestConfig => ({
     baseURL: baseUrl.endsWith('/') ? `${baseUrl}api/` : `${baseUrl}/api/`,
     headers: {
       ...headers,
       Authorization: `Bearer ${apiToken}`,
     },
+    ...additionalConfig,
   }),
 
   createQueryString: (queryObject?: KeyValue<any>) =>
