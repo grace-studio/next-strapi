@@ -29,7 +29,14 @@ export class HttpClient {
     );
 
     try {
-      response = await fetch(`${baseUrl}${url}`, options);
+      const resp = await fetch(`${baseUrl}${url}`, options);
+
+      if (resp.status !== 200) {
+        throw new Error('Failed to fetch');
+      }
+      const json: any = await resp.json();
+      response = json.data;
+
       const responseTime = Date.now() - startTime;
       logger(
         { fetchUrl: url, responseTime: `${responseTime} ms` },
@@ -39,6 +46,6 @@ export class HttpClient {
       throwError('Unable to get data from url.', url, err);
     }
 
-    return response!.data;
+    return response;
   }
 }
