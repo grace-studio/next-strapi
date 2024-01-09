@@ -1,25 +1,18 @@
 import qs from 'qs';
-import { AxiosRequestConfig } from 'axios';
 import {
   FetchCollectionItemOptions,
   FetchItemOptions,
   FetchNavigationOptions,
   KeyValue,
+  NextStrapiConfig,
 } from '../types';
 
 export const ApiFactory = {
-  createRequestConfig: (
-    baseUrl: string,
-    apiToken: string,
-    headers?: Record<string, string>,
-    additionalConfig?: Omit<AxiosRequestConfig, 'baseURL' | 'headers'>,
-  ): AxiosRequestConfig => ({
-    baseURL: baseUrl.endsWith('/') ? `${baseUrl}api/` : `${baseUrl}/api/`,
+  createRequestOptions: (config: NextStrapiConfig) => ({
     headers: {
-      ...headers,
-      Authorization: `Bearer ${apiToken}`,
+      ...config.headers,
+      Authorization: `Bearer ${config.apiToken}`,
     },
-    ...additionalConfig,
   }),
 
   createQueryString: (queryObject?: KeyValue<any>) =>

@@ -1,4 +1,3 @@
-import qs from 'qs';
 import { ApiFactory } from '../factories/apiFactory';
 import { DataFactory } from '../factories/dataFactory';
 import { HttpClient } from '../data/httpClient';
@@ -31,12 +30,12 @@ export class NextStrapi {
   private async __fetchFromApi<T, M>(
     path: string,
     queryObject: KeyValue<any>,
-    revalidate?: number,
+    extraOptions?: RequestInit,
   ) {
     const queryString = ApiFactory.createQueryString(queryObject);
     const url = queryString ? `${path}?${queryString}` : path;
 
-    const response = await this.__httpClient.get(url, revalidate);
+    const response = await this.__httpClient.get(url, extraOptions);
 
     return {
       data: [DataFactory.flattenStrapiV4Response<T>(response)].flat(),
@@ -55,7 +54,7 @@ export class NextStrapi {
       return __this.__fetchFromApi<T, M>(
         options.apiId,
         queryObject,
-        options.revalidate,
+        options.extraFetchOptions,
       );
     };
 
@@ -68,19 +67,20 @@ export class NextStrapi {
       return __this.__fetchFromApi<T, M>(
         options.apiId,
         queryObject,
-        options.revalidate,
+        options.extraFetchOptions,
       );
     };
 
     const collectionPaths = <T extends {} = object, M extends {} = object>({
       apiId,
+      extraFetchOptions,
     }: FetchCollectionPaths) => {
       const queryObject = {
         locale: 'all',
         fields: ['slug', 'locale'],
       };
 
-      return __this.__fetchFromApi<T, M>(apiId, queryObject);
+      return __this.__fetchFromApi<T, M>(apiId, queryObject, extraFetchOptions);
     };
 
     const navigation = <T extends {} = object, M extends {} = object>(
@@ -89,11 +89,16 @@ export class NextStrapi {
       const queryObject = ApiFactory.createQueryObjectForNavigation(options);
       const path = `navigation/render/${options.navigationIdOrSlug}`;
 
-      return __this.__fetchFromApi<T, M>(path, queryObject);
+      return __this.__fetchFromApi<T, M>(
+        path,
+        queryObject,
+        options.extraFetchOptions,
+      );
     };
 
     const menu = async <T extends {} = object, M extends {} = object>({
       slug,
+      extraFetchOptions,
     }: FetchMenuOptions) => {
       let id;
       try {
@@ -109,7 +114,7 @@ export class NextStrapi {
       };
       const path = `menus/${id}`;
 
-      return __this.__fetchFromApi<T, M>(path, queryObject);
+      return __this.__fetchFromApi<T, M>(path, queryObject, extraFetchOptions);
     };
 
     return {

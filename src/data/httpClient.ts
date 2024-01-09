@@ -1,22 +1,13 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import deepmerge from 'deepmerge';
 import { ApiFactory } from '../factories/apiFactory';
 import { NextStrapiConfig } from '../types';
 import { logger, throwError, validateConfig } from '../utils';
 
 export class HttpClient {
-  private __instance: AxiosInstance;
   private __config: NextStrapiConfig;
 
   private constructor(config: NextStrapiConfig) {
     this.__config = config;
-
-    const requestConfig = ApiFactory.createRequestConfig(
-      config.apiUrl,
-      config.apiToken,
-      config.headers,
-      config.additionalConfig,
-    );
-    this.__instance = axios.create(requestConfig);
   }
 
   static create(config: NextStrapiConfig) {
@@ -25,14 +16,20 @@ export class HttpClient {
     return new HttpClient(config);
   }
 
-  async get(url: string, revalidate?: number) {
+  async get(url: string, extraOptions: RequestInit = {}) {
     let response: any;
+    const baseUrl = this.__config.apiUrl.endsWith('/')
+      ? `${this.__config.apiUrl}api/`
+      : `${this.__config.apiUrl}/api/`;
     const startTime = Date.now();
 
+    const options: RequestInit = deepmerge(
+      ApiFactory.createRequestOptions(this.__config),
+      extraOptions,
+    );
+
     try {
-      response = await this.__instance.get<any>(url, {
-        ...(revalidate ? { next: { revalidate } } : {}),
-      } as AxiosRequestConfig);
+      response = await fetch(`${baseUrl}${url}`, options);
       const responseTime = Date.now() - startTime;
       logger(
         { fetchUrl: url, responseTime: `${responseTime} ms` },
